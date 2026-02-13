@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Docs Viewer - {{ file }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Viewing: {{ file }}</h1>
+    <div class="doc-content">{{ content | safe }}</div>
+    <p><a href="/docs">Back to docs</a></p>
+  </div>
+</body>
+</html>

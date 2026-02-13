@@ -1,0 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+# VSCode settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python virtual environments
+.venv/
+.env/
+
+# FAISS index files (if persisted)
+*.index
+*.pkl
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/

@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Docs Index</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Project Docs</h1>
+    {% if readme %}
+      <p><a href="/docs/view?file={{ readme }}">README</a></p>
+    {% endif %}
+
+    <ul>
+    {% for e in tree %}
+      <li>
+        {% if e.is_dir %}
+          <strong>{{ e.name }}/</strong>
+          <ul>
+            {% for c in e.children %}
+              <li>
+                {% if c.is_dir %}
+                  <strong>{{ c.name }}/</strong>
+                {% else %}
+                  <a href="/docs/view?file={{ c.path }}">{{ c.name }}</a>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <a href="/docs/view?file={{ e.path }}">{{ e.name }}</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+
+    <p><a href="/">Back</a></p>
+  </div>
+</body>
+</html>
