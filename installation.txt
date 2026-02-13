@@ -1,0 +1,90 @@
+Installation and Usage
+======================
+
+This file documents how to install dependencies, configure the app, ingest PDFs, run the CLI, and run the web UI.
+
+Prerequisites
+- Python 3.10+ (Windows). Ensure `python` and `pip` are on your PATH.
+- (Optional) An OpenAI API key if you want the OpenAI-backed LLM.
+
+1) Create and activate a virtual environment
+
+PowerShell (Windows):
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+2) Install dependencies
+
+```powershell
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+3) Configure environment variables
+
+Create a `.env` file in the project root (optional). Example values:
+
+```
+OPENAI_API_KEY=sk-...
+EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+FAISS_INDEX_PATH=./faiss.index
+TOP_K=5
+SIMILARITY_THRESHOLD=0.2
+```
+
+Notes:
+- If `OPENAI_API_KEY` is not provided the app uses a `DummyLLM` (offline placeholder).
+- `EMBEDDING_MODEL` defaults to `sentence-transformers/all-MiniLM-L6-v2` but can be changed.
+
+4) Ingest PDF files (CLI)
+
+```powershell
+# Ingest one or more PDFs and persist FAISS index
+python -m app.main ingest path\to\doc1.pdf path\to\doc2.pdf
+```
+
+This will:
+- Load PDFs, chunk them, compute embeddings, add to FAISS, and persist the index to `FAISS_INDEX_PATH`.
+
+5) Chat via CLI
+
+```powershell
+python -m app.main chat
+```
+
+Type questions at the prompt. The agent will refuse to answer if retrieved context is insufficient.
+
+6) Run the web UI (FastAPI + Uvicorn)
+
+```powershell
+# from project root
+uvicorn app.web.server:app --reload --port 8000
+```
+
+Open http://127.0.0.1:8000 in a browser. The web UI posts to `/api/chat`, which uses the same agent logic as the CLI.
+
+7) Tests
+
+```powershell
+pytest -q
+```
+
+8) Extending the system
+- To add a new embedding provider, implement `app.core.interfaces.Embedder` and swap wiring in `app/main.py` or the web server.
+- To add a new vector store, implement `app.core.interfaces.VectorStore`.
+- To add a new LLM provider, implement `app.core.interfaces.LLMClient`.
+
+9) Troubleshooting
+- If you see import errors, ensure the virtual environment is activated and dependencies are installed.
+- If FAISS index loading fails, remove any stale `.index`/`.meta` files or point `FAISS_INDEX_PATH` to a new location.
+- For large PDFs or many documents, ensure you have enough memory; consider using a disk-backed index or batching ingestion.
+
+10) Security & deployment notes
+- This project is a local demo. Do not expose an unprotected web UI to the public without adding authentication and rate limiting.
+- For production, separate concerns into services, add persistent storage for metadata, and secure API keys.
+
+Contact / Next steps
+- If you want, I can add an `/api/ingest` endpoint to upload PDFs from the web UI, or add a GitHub Actions workflow to run tests.

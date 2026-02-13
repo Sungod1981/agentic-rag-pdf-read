@@ -1,0 +1,13 @@
+numpy
+faiss-cpu
+sentence-transformers
+pypdf
+openai
+python-dotenv
+pytest
+typing-extensions
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+markdown

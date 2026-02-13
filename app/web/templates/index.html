@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>RAG Chat</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+
+      <h1>RAG Chat</h1>
+      <p><a href="/docs">📄 Project Docs</a></p>
+
+      <div>
+        <label for="pdf">Upload PDF (chat will be scoped to this file):</label>
+        <input type="file" id="pdf" accept="application/pdf" />
+        <button id="upload">Upload</button>
+        <span id="upload-status"></span>
+      </div>
+
+      <textarea id="question" placeholder="Ask a question using the uploaded document..."></textarea>
+      <button id="ask">Ask</button>
+      <pre id="answer"></pre>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
